@@ -1,21 +1,50 @@
 import Image from "next/image";
 
 async function getAboutData() {
-  const res = await fetch(
-    "https://irarealty.in/cms/api/AboutUs/getAboutUsSections",
-    { cache: "no-store" }
-  );
+  try {
+    const res = await fetch(
+      "https://irarealty.in/cms/api/AboutUs/getAboutUsSections",
+      {
+        cache: "no-store",
+        headers: {
+          "User-Agent": "Mozilla/5.0",
+          "Accept": "application/json",
+        },
+      }
+    );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch About data");
+    if (!res.ok) {
+      console.error("About Fetch Status:", res.status);
+      return null;
+    }
+
+    const contentType = res.headers.get("content-type");
+
+    if (!contentType || !contentType.includes("application/json")) {
+      console.error("About API did not return JSON");
+      return null;
+    }
+
+    return await res.json();
+
+  } catch (error) {
+    console.error("About Fetch Error:", error);
+    return null;
   }
-
-  return res.json();
 }
 
 export default async function AboutUsPage() {
-  const data = await getAboutData();
-  const sections = data.aboutussections;
+  const data = await getAboutData()
+
+if (!data) {
+  return (
+    <main className="bg-white w-full overflow-x-hidden p-20 text-center">
+      Failed to load content.
+    </main>
+  );
+}
+
+const sections = data.aboutussections;
 
   return (
     <main className="bg-white w-full overflow-x-hidden">
