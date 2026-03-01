@@ -10,14 +10,21 @@ export default async function Home() {
   try {
     const res = await fetch(
       "https://irarealty.in/cms/api/home/getHomeSections",
-      { cache: "no-store" }
+      {
+        cache: "no-store",
+        headers: {
+          "User-Agent": "Mozilla/5.0",
+          "Accept": "application/json",
+        },
+      }
     );
 
     if (!res.ok) {
-      throw new Error("Failed to fetch home sections");
+      throw new Error(`Failed to fetch home sections: ${res.status}`);
     }
 
     const contentType = res.headers.get("content-type");
+
     if (!contentType || !contentType.includes("application/json")) {
       throw new Error("Response is not JSON");
     }
