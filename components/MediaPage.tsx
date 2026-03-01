@@ -27,17 +27,42 @@ export default function MediaPage() {
   });
 
   useEffect(() => {
-    fetch("https://irarealty.in/cms/api/getMediaDetails")
-      .then((res) => res.json())
-      .then((data) => {
-        setMedia(data.header.section2.media);
+    const fetchMedia = async () => {
+      try {
+        const res = await fetch(
+          "https://irarealty.in/cms/api/getMediaDetails",
+          { cache: "no-store" }
+        );
+
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("API did not return JSON");
+        }
+
+        const data = await res.json();
+
+        setMedia(data?.header?.section2?.media || []);
+
         setHeader({
-          title: data.header.section1.title,
-          subtitle: data.header.section1.descriptison,
-          img_url: data.header.section1.img_url,
+          title: data?.header?.section1?.title || "MEDIA",
+          subtitle:
+            data?.header?.section1?.description ||
+            "STAY UP-TO-DATE WITH THE LATEST NEWS, STORIES AND HAPPENINGS FROM IRA REALTY",
+          img_url:
+            data?.header?.section1?.img_url ||
+            "https://irarealty.in/cms/assets/uploads/97b61475b8bab3773df0b2aedaf3aba4.jpg",
         });
-      })
-      .catch((err) => console.error(err));
+      } catch (err) {
+        console.error("Media Fetch Error:", err);
+        setMedia([]); // prevents crash
+      }
+    };
+
+    fetchMedia();
   }, []);
 
   // Filter logic
@@ -63,10 +88,10 @@ export default function MediaPage() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-6">
           <h2
             className="text-[28px] md:text-[34px] lg:text-[40px] font-bold text-[#362A82] uppercase ml-0 md:ml-10 lg:ml-34"
-            
-            style={{ fontFamily: "var(--font-times), serif",
-               letterSpacing: "2px"
-             }}
+            style={{
+              fontFamily: "var(--font-times), serif",
+              letterSpacing: "2px",
+            }}
           >
             FEATURED MEDIA
           </h2>
@@ -108,19 +133,21 @@ export default function MediaPage() {
                 />
 
                 <div className="absolute inset-0 bg-[#6c757d]/80 flex flex-col items-start justify-end text-left p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 <p className="text-white/80 text-[13px] md:text-normal font-normal leading-tight ">
-  {item.description}
-</p>
+                  <p className="text-white/80 text-[13px] md:text-normal font-normal leading-tight ">
+                    {item.description}
+                  </p>
 
-{item.sub_description && (
-  <p className="text-white/80 text-[14px] ">
-    {item.sub_description}
-  </p>
-)}
+                  {item.sub_description && (
+                    <p className="text-white/80 text-[14px] ">
+                      {item.sub_description}
+                    </p>
+                  )}
+
                   <p className="text-white/80 text-[14px] mb-1 ">
                     {item.date}
                   </p>
-                  <span className="px-6 py-2 bg-[#362a82] text-white text-[14px] font-normal rounded  tracking-wider">
+
+                  <span className="px-6 py-2 bg-[#362a82] text-white text-[14px] font-normal rounded tracking-wider">
                     View Article
                   </span>
                 </div>
@@ -128,7 +155,7 @@ export default function MediaPage() {
             </a>
           ))}
         </div>
-        
+
         {filteredMedia.length === 0 && (
           <div className="text-center py-20 text-gray-500">
             No media items found for the selected language.
