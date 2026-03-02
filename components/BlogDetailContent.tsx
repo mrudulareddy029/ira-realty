@@ -17,15 +17,13 @@ export default function BlogDetailContent({ data }: any) {
 
   return (
     <div className="bg-white">
-      {/* Hero Section */}
       <HeroSection
-        title={blog.title}
-        subtitle={blog.small_description}
-        bgImage={bannerImage}
-      />
+  title={blog.title}
+  bgImage={bannerImage}
+/>
 
       {/* Blog Content */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-8 lg:px-0 py-12 sm:py-16 lg:py-20">
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-8 lg:px-0 pt-20 sm:pt-24 lg:pt-28 pb-16">
         
         <div
           className="

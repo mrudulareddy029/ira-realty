@@ -71,7 +71,7 @@ export default function BlogsLayout({ blogs = [] }: { blogs: Blog[] }) {
               </div>
             </div>
 
-            <div className={`${isMobileOpen ? "block" : "hidden"} lg:block px-6 pb-6 lg:px-8 lg:pb-10`}>
+            <div className={`${isMobileOpen ? "block" : "hidden"} lg:block px-6 pb-6 lg:px-8 lg:pb-24`}>
               <div className="grid grid-cols-1 gap-1 lg:space-y-1 font-sans">
                 {categories.map((cat) => (
                   <label key={cat.id} className="flex items-center gap-3 cursor-pointer py-1">
