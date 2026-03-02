@@ -95,10 +95,7 @@ const sections = data.aboutussections;
     <div className="absolute -top-12 -left-12 w-[80%] h-[120%] bg-[#FDF0E9] rounded-full blur-3xl opacity-60 -z-10" />
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#FDF0E9]/50 rounded-[40%] rotate-12 -z-10" />
 
-    {/* Responsive Image Container: 
-        - Changed w-[436px] to w-full max-w-[436px]
-        - Added h-[200px] for mobile, md:h-[245px] for desktop
-    */}
+    
     <div className="relative w-full max-w-[436px] h-[200px] md:h-[245px] mx-auto">
       <Image
         src={sections.section2.image_url}

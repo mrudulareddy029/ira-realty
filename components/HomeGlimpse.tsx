@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function HomeGlimpse({ data }: any) {
@@ -38,18 +39,20 @@ export default function HomeGlimpse({ data }: any) {
 
           {/* RIGHT COLUMN */}
           <div className="w-full lg:pl-10 lg:-mr-[40px] ">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true, amount: 0.2 }}
-            className="w-full lg:w-[110%] h-[280px] sm:h-[350px] md:h-[450px] lg:h-[500px] bg-contain bg-no-repeat bg-center "
-            
-              style={{
-                backgroundImage: `url('${data.image_url}')`,
-              }}
-            />
-          </div>
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5 }}
+    viewport={{ once: true, amount: 0.2 }}
+    className="w-full lg:w-[110%] h-[280px] sm:h-[350px] md:h-[450px] lg:h-[500px] flex items-center justify-center"
+  >
+    <img 
+      src={data.image_url} 
+      alt="content"
+      className="max-w-full max-h-full object-contain rounded-lg" 
+    />
+  </motion.div>
+</div>
 
         </div>
       </div>

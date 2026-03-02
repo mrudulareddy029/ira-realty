@@ -55,34 +55,48 @@ export const ProjectCard = ({ proj }: { proj: ProjectCardProps }) => {
           )}
         </div>
 
-        {/* ✅ FIXED ALIGNMENT SECTION (2x2 Grid Properly Aligned) */}
+        {/*  FIXED ALIGNMENT SECTION (2x2 Grid Properly Aligned) */}
         <div className="grid grid-cols-2 gap-y-3 gap-x-6 pt-2 text-[14px] mb-3">
 
-         {/* Row 1 - Location */}
-<div className="flex items-center gap-2 text-[#383838]">
-  <img src="/images/project-icons/location-icon.jpg" className="w-4 h-4" alt="" />
-  <span className="text-[16px]  font-medium leading-[20px]">
-    {proj.location}
-  </span>
-</div>
+          {/* Row 1 - Location */}
+       <div className="flex items-center gap-2 text-[#383838]">
+        <img src="/images/project-icons/location-icon.jpg" className="w-4 h-4" alt="" />
+        <span className="text-[16px]  font-medium leading-[20px]">
+        {proj.location}
+      </span>
+    </div>
 
-{/* Row 1 - Dimensions */}
-<div className="flex items-center gap-2 justify-end text-[#383838]">
+  {/* Row 1 - Dimensions */}
+  <div className="flex items-center gap-2 justify-end text-[#383838]">
   <img src="/images/project-icons/dimensions-icon.jpg" className="w-4 h-4" alt="" />
   <span className="text-[16px] leading-[20px] font-medium text-right">
-    {proj.dimensions}
+  {proj.dimensions}
   </span>
-</div>
+  </div>
 
           {/* Row 2 - Unit Size */}
-          <div className="text-[15px] text-gray-600">
-            Unit Size : <span className="font-semibold text-[#383838]">{proj.unitSize}</span>
-          </div>
+<div className="text-[15px] text-gray-600">
+  {proj.unitSize?.trim() && (
+    <>
+      Unit Size :{" "}
+      <span className="font-semibold text-[#383838]">
+        {proj.unitSize}
+      </span>
+    </>
+  )}
+</div>
 
-          {/* Row 2 - Luxury Level */}
-          <div className="text-[15px] text-gray-600 text-right">
-            Luxury Level : <span className="font-semibold text-[#383838]">{proj.luxuryLevel}</span>
-          </div>
+{/* Row 2 - Luxury Level */}
+<div className="text-[15px] text-gray-600 text-right">
+  {proj.luxuryLevel?.trim() && (
+    <>
+      Luxury Level :{" "}
+      <span className="font-semibold text-[#383838]">
+        {proj.luxuryLevel}
+      </span>
+    </>
+  )}
+</div>
 
         </div>
 
