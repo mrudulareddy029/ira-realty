@@ -14,8 +14,9 @@ interface Blog {
 
 export default function BlogsLayout({ blogs = [] }: { blogs: Blog[] }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  /* Added state for mobile category toggle */
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // 1. Process data to be unique by slug AND extract categories
   const { uniqueBlogs, categories } = useMemo(() => {
     const catMap = new Map<string, string>();
     const slugSet = new Set<string>();
@@ -44,7 +45,6 @@ export default function BlogsLayout({ blogs = [] }: { blogs: Blog[] }) {
     );
   };
 
-  // 2. Filter the already cleaned blogs
   const filteredBlogs = selectedCategories.length > 0
     ? uniqueBlogs.filter((b) => b.cat_id && selectedCategories.includes(b.cat_id))
     : uniqueBlogs;
@@ -55,40 +55,52 @@ export default function BlogsLayout({ blogs = [] }: { blogs: Blog[] }) {
 
         {/* SIDEBAR */}
         <aside className="w-full lg:w-[350px] shrink-0">
-          {/* Changed 'sticky' to 'lg:sticky' so it only sticks when on the side */}
-          <div className="bg-blog-bg p-6 lg:p-8 rounded-lg lg:sticky lg:top-28 shadow-sm">
-<h3 className="text-[21px] font-semibold mb-6 text-dark-black tracking-wide font-sans">
-  Categories
-</h3>
-
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-1 lg:space-y-4">
-              {categories.map((cat) => (
-                <label key={cat.id} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 accent-blog-accent"
-                    checked={selectedCategories.includes(cat.id)}
-                    onChange={() => toggleCategory(cat.id)}
-                  />
-                  <span className={`text-[14px] lg:text-[15px] truncate ${
-                      selectedCategories.includes(cat.id)
-                        ? "text-blog-accent font-semibold"
-                        : "text-gray-700"
-                    }`}>
-                    {cat.name}
-                  </span>
-                </label>
-              ))}
+          <div className="bg-[#f3815c33] rounded-lg lg:sticky lg:top-28 shadow-sm font-sans overflow-hidden">
+            <div 
+              className="flex items-center justify-between  px-4 py-4 lg:px-8 lg:py-8 cursor-pointer lg:cursor-default"
+              onClick={() => setIsMobileOpen(!isMobileOpen)}
+            >
+              <h3 className="text-[18px] lg:text-[20px] font-semibold text-[#222] tracking-wide">
+                Categories
+              </h3>
+              {/* Filter Icon for Mobile */}
+              <div className="lg:hidden text-blog-accent">
+                <svg className={`w-5 h-5 transition-transform ${isMobileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+              </div>
             </div>
 
-            {selectedCategories.length > 0 && (
-              <button
-                onClick={() => setSelectedCategories([])}
-                className="text-xs text-blog-accent underline mt-6 hover:text-black block"
-              >
-                Clear all filters
-              </button>
-            )}
+            <div className={`${isMobileOpen ? "block" : "hidden"} lg:block px-6 pb-6 lg:px-8 lg:pb-10`}>
+              <div className="grid grid-cols-1 gap-1 lg:space-y-1 font-sans">
+                {categories.map((cat) => (
+                  <label key={cat.id} className="flex items-center gap-3 cursor-pointer py-1">
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 accent-blog-accent"
+                      checked={selectedCategories.includes(cat.id)}
+                      onChange={() => toggleCategory(cat.id)}
+                    />
+                    <span className={`text-[14px] lg:text-[15px] truncate ${
+                        selectedCategories.includes(cat.id)
+                          ? "text-blog-accent font-semibold"
+                          : "text-gray-700"
+                      }`}>
+                      {cat.name}
+                    </span>
+                  </label>
+                ))}
+              </div>
+
+              {selectedCategories.length > 0 && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); setSelectedCategories([]); }}
+                  className="text-xs text-blog-accent underline mt-6 hover:text-black block"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
           </div>
         </aside>
 
@@ -102,31 +114,29 @@ export default function BlogsLayout({ blogs = [] }: { blogs: Blog[] }) {
                   href={`/blogs/${blog.slug}`} 
                   className="group block h-full"
                 >
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 flex flex-col ">
-                    
-                    {/* Adjusted height for mobile (h-48) vs desktop (h-56) */}
+                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 flex flex-col h-full">
                     <div className="relative h-48 md:h-56 overflow-hidden">
                       <img
                         src={blog.thumbimage}
                         alt={blog.title}
-                        className="w-full h-full object-cover transition-transform duration-500"
+                        className="w-full h-full object-cover transition-transform duration-500 "
                       />
                     </div>
 
                     <div className="p-5 lg:p-6 flex flex-col flex-grow">
-                      <p className="text-[#383838] text-xs lg:text-[16px] font-normal tracking-normal mb-2 ">
+                      <p className="text-[#383838] text-xs lg:text-[16px] font-normal mb-2">
                         {blog.cat_name}
                       </p>
 
-                      <h2 className="text-base lg:text-lg font-medium text-[#362a82] mb-3 line-clamp-2 tracking-normal">
+                      <h2 className="text-base lg:text-lg font-medium text-[#362a82] mb-3 line-clamp-2">
                         {blog.title}
                       </h2>
 
-                      <p className="text-[16px] text-black/40  line-clamp-3 mb-6 flex-grow leading-relaxed">
+                      <p className="text-[14px] lg:text-[16px] text-black/40 line-clamp-3 mb-6 flex-grow leading-relaxed">
                         {blog.small_description?.replace(/<[^>]*>?/gm, "")}
                       </p>
 
-                      <div className="flex items-center justify-end text-[#362a82] text-sm lg:text-sm font-normal">
+                      <div className="flex items-center justify-end text-[#362a82] text-[14px] font-sans font-normal mt-auto">
                         Read More
                         <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -143,7 +153,6 @@ export default function BlogsLayout({ blogs = [] }: { blogs: Blog[] }) {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
