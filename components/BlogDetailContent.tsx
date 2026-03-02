@@ -1,4 +1,4 @@
-import HeroSection from "./HeroSection";
+import HeroSection from "@/components/HeroSection";
 
 export default function BlogDetailContent({ data }: any) {
   const blog = data?.result;
@@ -19,6 +19,7 @@ export default function BlogDetailContent({ data }: any) {
     <div className="bg-white">
       <HeroSection
   title={blog.title}
+  
   bgImage={bannerImage}
 />
 
@@ -42,8 +43,7 @@ export default function BlogDetailContent({ data }: any) {
             prose-headings:mb-4
             
             /* Paragraph spacing */
-            prose-p:mb-8
-            
+            prose-p:mb-8     
             prose-p:text-left lg:prose-p:text-justify
 
             /* Strong text */
@@ -55,12 +55,11 @@ export default function BlogDetailContent({ data }: any) {
             prose-ul:mb-6
             prose-li:mb-2
             prose-p:first:mb-16
-[&>div:first-child]:mb-16
+            [&>div:first-child]:mb-16
             /* Blockquotes */
             prose-blockquote:border-l-4
             prose-blockquote:border-black
-            prose-blockquote:pl-4
-            
+            prose-blockquote:pl-4  
             prose-blockquote:text-[#444]
           "
           dangerouslySetInnerHTML={{ __html: decodedBody }}

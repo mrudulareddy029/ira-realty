@@ -19,9 +19,10 @@ export default async function BlogsPage() {
     <main>
       <HeroSection
         title="BLOGS"
-        subtitle="Curated articles of our thoughts and experiences on Real Estate and more"
+        description="Curated articles of our thoughts and experiences on Real Estate and more"
         bgImage="https://irarealty.in/assets/Blogs-Background-Image.jpeg"
       />
+      
       {/* Pass the data to your client component */}
       <BlogsLayout blogs={blogs} />
     </main>

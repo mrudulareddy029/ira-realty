@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
@@ -79,7 +78,7 @@ export default function MediaPage() {
     <div className="bg-white">
       <HeroSection
         title={header.title}
-        subtitle={header.subtitle}
+        description={header.subtitle}
         bgImage={header.img_url}
       />
 

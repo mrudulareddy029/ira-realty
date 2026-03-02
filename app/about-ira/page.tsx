@@ -79,7 +79,7 @@ const sections = data.aboutussections;
             <h2 className="w-full text-sm md:text-[16px] font-normal uppercase
              leading-[1.7] tracking-[1.2px] " 
              style={{ fontFamily: "var(--font-times), serif" }}>
-              {sections.section1.descriptison}
+              {sections.section1?.descriptison}
             </h2>
 
           </div>
